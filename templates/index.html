@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Photo Viewer</a>
+          <a class="brand" href="/">Photo Viewer</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <!-- <li class="active"><a href="/">Home</a></li> -->
@@ -19,6 +19,15 @@
     <div class="container">
         <div class="row">
           <div class="span3">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <p class="alert {{ alert_type }}" style="font-family: 'arial', serif;">
+                {% for message in messages %}
+                  {{ message }}
+                {% endfor %}
+                </p>
+              {% endif %}
+            {% endwith %}
             <p style="padding-top: 80px;">
               <small>Para enviar uma foto, basta fornecer um <strong>título</strong> e a <strong>imagem</strong> que se deseja utilizar. </small>
             </p>
@@ -35,7 +44,7 @@
                   <label for="id_file"> Imagem: </label>
                   <input id="id_file" style="width:180px" type="file" name="file">
 
-                  <input class="btn btn-large btn-block btn-primary" type="submit" value="Do Stuff" onclick="this.disabled=1; this.form.submit();"/>
+                  <input class="btn btn-large btn-block btn-primary" type="submit" value="Enviar Imagem" onclick="this.disabled=1; this.form.submit();"/>
               </form>
           </div>
             
