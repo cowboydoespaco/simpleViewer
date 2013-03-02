@@ -19,10 +19,10 @@
     <div class="container">
         <div class="row">
           <div class="span3">
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
-                <p class="alert {{ alert_type }}" style="font-family: 'arial', serif;">
-                {% for message in messages %}
+                {% for category, message in messages %}
+                  <p class="alert {{ category }}" style="font-family: 'arial', serif;">
                   {{ message }}
                 {% endfor %}
                 </p>
