@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<juiceboxgallery
+	galleryTitle="Juicebox Lite Gallery"
+>
+  {% for imagem in imagens %}
+  <image imageURL="/uploads/{{imagem.nomeArquivo}}"
+	thumbURL="/uploads/thumb_{{imagem.nomeArquivo}}"
+	linkURL="/uploads/{{imagem.nomeArquivo}}"
+	linkTarget="_blank">
+	<title>{{imagem.titulo}}</title>
+  </image>
+  {% endfor %}
+  
+</juiceboxgallery>

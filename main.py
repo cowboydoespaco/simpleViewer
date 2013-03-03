@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, flash, redirect
+from flask import Flask, render_template, request, flash, \
+    redirect, send_from_directory, make_response
 from flask.ext.sqlalchemy import SQLAlchemy
 from werkzeug import secure_filename
 import os, Image
@@ -31,6 +32,16 @@ def index():
     template = 'index.html'
     return render_template('base.html', **locals())
 
+@app.route("/galeria/")
+def galeria():
+    imagens = Imagem.query.all()
+    f = open('static/xml/juiceConfig.xml', 'w')
+    f.write(render_template('juicebox.xml', imagens=imagens))
+
+    resp = make_response(render_template('gallery.html'))
+    resp.cache_control.no_cache = True
+    return resp
+
 @app.route("/requisicao/", methods=['GET', 'POST'])
 def requisicao():
     file = request.files['file']
@@ -42,16 +53,21 @@ def requisicao():
         flash(u'Tipo de arquivo não permitido.', 'alert-error')
         return redirect('/')
 
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
+
 def salvarImagem(file, titulo, nomeArquivo):
     filename = secure_filename(file.filename)
     save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(save_path)
-    generateThumbnail(save_path, "thumb_"+filename)
+    gerarThumbnail(save_path, "thumb_"+filename)
     imagem = Imagem(secure_filename(request.form['titulo']), filename)
     db.session.add(imagem)
     db.session.commit()
 
-def generateThumbnail(save_path, thumb_name):
+def gerarThumbnail(save_path, thumb_name):
     im = Image.open(save_path)
     im.thumbnail((100,100))
     im.save(os.path.join(app.config['UPLOAD_FOLDER'], thumb_name))
