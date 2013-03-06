@@ -9,6 +9,7 @@
 	linkURL="/uploads/{{imagem.nomeArquivo}}"
 	linkTarget="_blank">
 	<title>{{imagem.titulo}}</title>
+	<caption>{{imagem.descricao}}</caption>
   </image>
   {% endfor %}
   
